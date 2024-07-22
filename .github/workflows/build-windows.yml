@@ -1,0 +1,27 @@
+name: Build Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Windows
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Install required packages"
+        run: |
+          vcpkg install expat
+          vcpkg integrate install
+
+      - name: Configure CMake
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+
+      - name: Build
+        run: |
+          cd build
+          cmake --build . --config Release
